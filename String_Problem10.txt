@@ -1,0 +1,58 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+string findNextPermutation(string word) {
+    int n = word.length();
+    char* charArray = new char[n];
+    strcpy(charArray, word.c_str());
+
+    // Find the largest index k such that charArray[k] < charArray[k+1]
+    int k = n - 2;
+    while (k >= 0 && charArray[k] >= charArray[k + 1]) {
+        k--;
+    }
+
+    if (k < 0) {
+        // The word is already the last permutation, so return "no answer"
+        delete[] charArray;
+        return "no answer";
+    }
+
+    // Find the largest index l such that charArray[l] > charArray[k]
+    int l = n - 1;
+    while (l > k && charArray[l] <= charArray[k]) {
+        l--;
+    }
+
+    // Swap charArray[k] and charArray[l]
+    char temp = charArray[k];
+    charArray[k] = charArray[l];
+    charArray[l] = temp;
+
+    // Reverse the suffix starting from k+1
+    int start = k + 1;
+    int end = n - 1;
+    while (start < end) {
+        char temp = charArray[start];
+        charArray[start] = charArray[end];
+        charArray[end] = temp;
+        start++;
+        end--;
+    }
+
+    string nextPermutation(charArray);
+    delete[] charArray;
+
+    return nextPermutation;
+}
+
+int main() {
+    string word;
+    cout << "Enter the word: ";
+    getline(cin, word);
+    string nextPermutation = findNextPermutation(word);
+    cout << nextPermutation << endl;
+
+    return 0;
+}

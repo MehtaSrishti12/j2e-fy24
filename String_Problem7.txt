@@ -1,0 +1,36 @@
+#include <iostream>
+#include <string>
+#include <unordered_set>
+using namespace std;
+
+int countNonRepeatingSubstrings(string s) {
+    int n = s.length();
+    unordered_set<char> window;
+    int count = 0;
+    int left = 0;
+    int right = 0;
+
+    while (right < n) {
+        char c = s[right];
+        if (window.find(c) == window.end()) {
+            window.insert(c);
+            count += right - left + 1;
+            right++;
+        } else {
+            window.erase(s[left]);
+            left++;
+        }
+    }
+
+    return count;
+}
+
+int main() {
+    string s;
+    cout << "Enter the string: ";
+    getline(cin, s);
+    int count = countNonRepeatingSubstrings(s);
+    cout << count << endl;
+
+    return 0;
+}

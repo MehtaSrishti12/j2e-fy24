@@ -1,0 +1,45 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <vector>
+using namespace std;
+
+struct CharacterSecurity {
+    char character;
+    int securityValue;
+
+    CharacterSecurity(char c, int security) : character(c), securityValue(security) {}
+
+    bool operator<(const CharacterSecurity& other) const {
+        return securityValue < other.securityValue;
+    }
+};
+
+int minimumSumDifference(vector<int>& securityValues, string msg) {
+    vector<CharacterSecurity> charSecurities;
+    for (char c : msg) {
+        int securityValue = securityValues[c - 'a'];
+        charSecurities.push_back(CharacterSecurity(c, securityValue));
+    }
+
+    sort(charSecurities.begin(), charSecurities.end());
+
+    int minSum = 0;
+    for (int i = 0; i < charSecurities.size() - 1; i++) {
+        int diff = abs(charSecurities[i].securityValue - charSecurities[i + 1].securityValue);
+        minSum += diff;
+    }
+
+    return minSum;
+}
+
+int main() {
+    vector<int> securityValues = {1, 2, 1, 3, 1, 3, 5, 7, 1, 1, 5, 5, 8, 10, 11, 1, 23, 2, 3, 7, 8, 9, 1, 6, 5, 9};
+    string msg;
+    cout << "Enter the string: ";
+    getline(cin, msg);
+    int minSum = minimumSumDifference(securityValues, msg);
+    cout << minSum << endl;
+
+    return 0;
+}
