@@ -1,0 +1,20 @@
+class Solution {
+public:
+    ListNode* mergeInBetween(ListNode* list1, int a, int b, ListNode* list2) {
+         ListNode* t1 = list1;
+        ListNode* t2 = list1;
+        for(int i = 0; i < a-1; i++) // setting t1 at its correct place, that is , at (a-1) nodes from starting
+        t1 = t1 -> next;
+        for(int i = 0; i < b; i++) // setting t2 at its correct place, that is , at b nodes from starting 
+        t2 = t2 -> next;
+        ListNode* temp = t2 -> next; // storing the track of rest of the list after b nodes
+        t1 -> next = list2; // merging list2 in list1.
+        ListNode* t3 = list2;
+        while(t3 -> next != NULL)
+        t3 = t3 -> next;
+
+        t3 -> next = temp; // t3->next is NULL, so merging the track of list1 after b nodes.
+        return list1;
+    }
+};
+Console

@@ -1,0 +1,94 @@
+class Node {
+public:
+    int val;
+    Node *next;
+    Node *prev;
+
+    Node(int _val) {
+        val = _val;
+        next = nullptr;
+        prev = nullptr;
+    }
+};
+
+
+class MyCircularDeque {
+public:
+    Node *front , *rear;
+    int size, currSize = 0;
+
+    MyCircularDeque(int k) {
+        front = new Node(-1);
+        rear = new Node(-1);
+        front -> next = rear;
+        rear -> prev = front;
+        size = k;
+    }
+    
+    bool insertFront(int value) {
+        if(isFull()) return false;
+
+        currSize++;
+        Node *node = new Node(value);
+        node -> next = front -> next;
+        node -> prev = front;
+        node -> next -> prev = node;
+        front -> next = node;
+
+        return true;
+    }
+    
+    bool insertLast(int value) {
+        if(isFull()) return false;
+
+        currSize++;
+        Node *node = new Node(value);
+        node -> prev = rear -> prev;
+        rear -> prev -> next = node;
+        node -> next = rear;
+        rear -> prev = node;
+
+        return true;
+
+    }
+    
+    bool deleteFront() {
+        if(isEmpty()) return false;
+
+        currSize--;
+        Node *temp = front -> next;
+        front -> next = temp -> next;
+        temp -> next -> prev = front;
+        delete temp;
+
+        return true;
+    }
+    
+    bool deleteLast() {
+        if(isEmpty()) return false;
+
+        currSize--;
+        Node *temp = rear -> prev;
+        rear -> prev = temp -> prev;
+        temp -> prev -> next = rear;
+        delete temp;
+        return true;
+
+    }
+    
+    int getFront() {
+        return isEmpty() ? -1 : front -> next -> val;
+    }
+    
+    int getRear() {
+         return isEmpty() ? -1 : rear -> prev -> val;
+    }
+    
+    bool isEmpty() {
+        return currSize == 0;
+    }
+    
+    bool isFull() {
+        return currSize == size;
+    }
+};
