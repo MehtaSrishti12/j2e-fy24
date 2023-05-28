@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int>v;
+    void solve(TreeNode* root){
+        if(!root)
+        return;
+
+        solve(root->left);
+        v.push_back(root->val);
+        solve(root->right);
+    }
+
+    bool isValidBST(TreeNode* root) {
+        if(!root)
+        return 1;
+
+        solve(root);
+
+        for(int i=1;i<v.size();i++){
+            if(v[i-1]>=v[i])
+            return 0;
+        }
+        return 1;
+
+        
+        
+    }
+};
