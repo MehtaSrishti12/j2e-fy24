@@ -1,0 +1,35 @@
+class Solution {
+public:
+   void eulerPath(string curr, 
+               unordered_map<string, deque<string>>& g,
+               vector<string>& order) {
+        // traverse the neighboring edges
+        while(!g[curr].empty()) {
+            // use the current edge, since in a euler path
+            // each edge is used only once, remove it
+            auto edge = g[curr].front();
+            g[curr].pop_front();
+            eulerPath(edge, g, order);
+        }
+        // add the curr node, as there is no other way from here
+        order.emplace_back(curr);
+    }
+    
+    vector<string> findItinerary(vector<vector<string>>& tickets) {
+        // create the graph, all the edges need to be sorted lexographically
+        unordered_map<string, deque<string>> g;
+        for(auto edge: tickets)
+            g[edge[0]].emplace_back(edge[1]);
+        
+        // sort the edges lexographically
+        for(auto [vertex, edges]: g)
+            sort(g[vertex].begin(), g[vertex].end());
+        
+        vector<string> order;
+        eulerPath("JFK", g, order);
+        // During finding the Euler path, the nodes which should be visited
+        // later can be found in front of order vector, so reverse it
+        reverse(order.begin(), order.end());
+        return order;
+    }
+};
